@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" th:href="@{../assets/puma.ico}" type="image/x-icon">
+    <!--Bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <!--CSS-->
+    <link rel="stylesheet" th:href="@{css/styles.css}">
+    <!--fontawesome-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <title>Inicio</title>   
+</head>
+<body>
+    <!-- container: no quita espacios
+        container-fluid: quita espacios-->
+    <div class="container">
+         <!--Header-->
+         <header class="row">
+            <div class="col header">
+                <div class="d-flex justify-content-around align-items-center">
+                    <a href="https://www.unam.mx" style="text-decoration: none; color: white; height: 100%;">
+                        <div class="d-inline-flex" >
+                            <div style="padding-right: 20px;">
+                                <img th:src="@{../assets/logo-unam.png}" class="" alt="logo UNAM" style="height: auto; width: 60px;">
+                            </div>            
+                            <div class="header-text align-self-center">
+                                <span class="text-center">Universidad Nacional<br>Autónoma de México</span>
+                            </div>                       
+                        </div>
+                    </a>
+                    <a href="https://deporte.unam.mx" style="text-decoration: none; color: white; height: 100%;">
+                        <div class="d-inline-flex">
+                            <div class="align-self-center header-text">
+                                <span class="text-center">Sistema<br>Pumadex</span>
+                            </div> 
+                            <div style="padding-left: 20px;">
+                                <img th:src="@{assets/LogoDeporteUNAM.png}" class="" alt="logo deporte unam" style="height: auto; width: 60px;">
+                            </div>              
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!--Navbar-->
+
+        <div class="row" style="background: #e1b715; color: #202c56; padding: 8px; margin-bottom: 5px; border-radius: 5px;">
+            <div class="col d-flex justify-content-between">
+                <a th:href="@{/home}" style="text-decoration: none; color: #202c56;">
+                    <div class="d-flex">
+                        <div style="margin-left: 20px;margin-right: 5px;">
+                            <span class="iconify" data-icon="ant-design:home-filled" style="color: #202c56; font-size: 25px;"></span>
+                        </div>
+                        <div class="align-self-end">
+                            <span>Inicio</span>
+                        </div>
+                    </div>
+                </a>
+
+                <div class="dropdown">
+                    <a class="" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none; color: #202c56;">
+                        <div class="d-flex">
+                            <div>
+                                <span class="iconify" data-icon="carbon:user-avatar-filled" style="color: #202c56; font-size: 25px;"></span>
+                            </div>
+                            <div class="align-self-end" style="margin-left: 5px; margin-right: 20px;">
+                                <span >Cuenta</span>
+                            </div>
+                        </div>                       
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" style="background: #202c56;">
+                        <li><a class="dropdown-item menu-usuario" th:href="@{/ajustes}">Ajustes de Cuenta</a></li>
+                        <li><a class="dropdown-item menu-usuario" th:href="@{/salir}">Cerrar Sesión</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!--Body-->
+
+        <section  class="home-main-container row" style="background: #edf5fc; border-radius: 5px;">
+            <div   class="col d-flex flex-column justify-content-center" style="padding: 2%;">
+                <div class="d-flex flex-column" style="color: #202c56; width: 100%; height: 100%;">
+                    <div class="home-header-text d-flex justify-content-between titulo" style="margin-bottom: 5%;font-size: 24px;">
+                        <div class="msg-usr" style="margin-left: 10px;">                          
+                            <span>Hola, <strong th:text="${nombreUsuario}"></strong>!</span>
+                        </div>
+                        <div class="msg-rol d-flex" style="margin-right: 10px;">
+                            <div class="" style="padding-right: 10px;">
+                                <span sec:authorize="hasRole('ROLE_ADMIN')" class="iconify" data-icon="clarity:administrator-solid" style="color: #202c56; font-size: 40px;"></span>
+                                <span sec:authorize="hasRole('ROLE_ENTRENADOR')" class="iconify" data-icon="ic:outline-sports" style="color: #202c56; font-size: 40px;"></span>
+                                <span sec:authorize="hasRole('ROLE_JUEZ')" class="iconify" data-icon="icomoon-free:hammer2" style="color: #202c56; font-size: 40px;"></span>
+                                <span sec:authorize="hasRole('ROLE_COMPETIDOR')" class="iconify" data-icon="ic:baseline-sports-kabaddi" style="color: #202c56; font-size: 40px;"></span>
+                            </div>
+                            <div class="align-self-end">
+                                <span sec:authorize="hasRole('ROLE_ADMIN')">Administrador</span>
+                                <span sec:authorize="hasRole('ROLE_ENTRENADOR')">Entrenador</span>
+                                <span sec:authorize="hasRole('ROLE_JUEZ')">Juez</span>
+                                <span sec:authorize="hasRole('ROLE_COMPETIDOR')">Competidor</span>
+                            </div>
+                        </div>                    
+                    </div>
+                   
+                    <div class="botonera" style="height: 100%;">
+                        <a class="btn-bd" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/juez/todos}" style="text-decoration: none; color: #202c56;">
+                            <div class="d-flex flex-column justify-content-center botondb">
+                                <div style="margin-bottom: 10px;">
+                                    <span>Jueces</span>
+                                </div>               
+                                <div style="padding-bottom: 5px; padding-top: 5px;">
+                                    <span class="iconify" data-icon="icomoon-free:hammer2" style="color: #202c56; font-size: 50px;"></span>
+                                </div>                    
+                            </div>
+                        </a>
+                       
+                        <a class="btn-bd" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/entrenador/todos}" style="text-decoration: none; color: #202c56;">
+                            <div class="d-flex flex-column justify-content-center botondb">
+                                <div style="margin-bottom: 10px;">
+                                    <span>Entrenadores</span>
+                                </div>               
+                                <div>
+                                    <span class="iconify" data-icon="ic:outline-sports" style="color: #202c56; font-size: 60px;"></span>
+                                </div>                             
+                            </div>
+                        </a>
+
+                        <a  class="btn-bd" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/disciplina/todas}" style="text-decoration: none; color: #202c56;">
+                            <div class="d-flex flex-column justify-content-center botondb">
+                                <div style="margin-bottom: 10px;">
+                                    <span>Disciplinas</span>
+                                </div>               
+                                <div>
+                                    <span class="iconify" data-icon="arcticons:olympics" style="color: #202c56; font-size: 60px;"></span>
+                                </div>        
+                            </div>
+                        </a> 
+                        <a  class="btn-bd" sec:authorize="hasRole('ROLE_ENTRENADOR')" th:href="@{/competidor/todos}" style="text-decoration: none; color: #202c56;">
+                            <div class="d-flex flex-column justify-content-center botondb">
+                                <div style="margin-bottom: 10px;">
+                                    <span>Competidores</span>
+                                </div>               
+                                <div>
+                                    <span class="iconify" data-icon="ic:baseline-sports-kabaddi" style="color: #202c56; font-size: 60px;"></span>
+                                </div>        
+                            </div>
+                        </a>
+                        <a  class="btn-bd" sec:authorize="hasRole('ROLE_ENTRENADOR')" th:href="@{/competidor/calificacionesEntrenador}" style="text-decoration: none; color: #202c56;">
+                            <div class="d-flex flex-column justify-content-center botondb">
+                                <div style="margin-bottom: 10px;">
+                                    <span>Calificaciones Competidores</span>
+                                </div>               
+                                <div>
+                                    <span class="iconify" data-icon="bi:clipboard-check-fill" style="color: #202c56; font-size: 60px;"></span>
+                                </div>        
+                            </div>
+                        </a>      
+
+                        <a  class="btn-bd" sec:authorize="hasRole('ROLE_JUEZ')" th:href="@{/competidor/calificaciones}" style="text-decoration: none; color: #202c56;">
+                            <div class="d-flex flex-column justify-content-center botondb">
+                                <div style="margin-bottom: 10px;">
+                                    <span>Calificar Competidores</span>
+                                </div>               
+                                <div>
+                                    <span class="iconify" data-icon="bi:clipboard-check-fill" style="color: #202c56; font-size: 60px;"></span>
+                                </div>        
+                            </div>
+                        </a>
+                        <a  class="btn-bd" sec:authorize="hasRole('ROLE_COMPETIDOR')" th:href="@{/competidor/miscalificaciones}" style="text-decoration: none; color: #202c56;">
+                            <div class="d-flex flex-column justify-content-center botondb">
+                                <div style="margin-bottom: 10px;">
+                                    <span>Consulta tus Calificaciones</span>
+                                </div>               
+                                <div>
+                                    <span class="iconify" data-icon="bi:clipboard-check-fill" style="color: #202c56; font-size: 60px;"></span>
+                                </div>        
+                            </div>
+                        </a>
+                        <a  class="btn-bd" th:href="@{/posiciones}" style="text-decoration: none; color: #202c56;">
+                            <div class="d-flex flex-column justify-content-center botondb">
+                                <div style="margin-bottom: 10px;">
+                                    <span>Tabla de Posiciones</span>
+                                </div>               
+                                <div>
+                                    <span class="iconify" data-icon="fa-solid:medal" style="color: #202c56; font-size: 60px;"></span>
+                                </div>        
+                            </div>
+                        </a>                                                
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       <!--Footer-->
+       <footer class="row">
+        <div class="col footer">
+            <div class="d-flex flex-column">
+                <!-- Redes Sociales-->
+                <div class="text-center" style="padding: 20px; padding-bottom: 0;">
+                    <div class="d-inline-flex div-social-m">
+                        <div class="">
+                            <p class="text-center fw-normal" style="font-size: 12px;">Encuéntranos en:</p>
+                        </div>
+                        <div class="social-m">                              
+                            <a href="https://www.facebook.com/DeporteUNAM1"><i class="fa-brands fa-facebook fa-lg"></i></a>
+                            <a href="https://twitter.com/deporteunam"><i class="fa-brands fa-twitter fa-lg"></i></a>
+                            <a href="https://www.instagram.com/deporteunam/"><i class="fa-brands fa-instagram fa-lg"></i></a>
+                            <a href="https://www.youtube.com/user/activdeportivas"><i class="fa-brands fa-youtube fa-lg"></i></a>
+                            <a href="https://www.tiktok.com/@deporteunam?lang=es"><i class="fa-brands fa-tiktok fa-lg"></i></a>      
+                        </div>
+                    </div>
+                </div>
+                <!--Creditos-->
+                <div class="" style="padding: 20px;">
+                    <p class="text-center fw-light lh-1" style="font-size: 10px;">
+                        Hecho en México, Universidad Nacional Autónoma de México (UNAM), todos los derechos reservados 2022. <br>
+                        Esta página puede ser reproducida con fines no lucrativos, siempre y cuando no se mutile, se cite la fuente <br>
+                        completa y su dirección electrónica. De otra forma, requiere permiso previo por escrito de la institución. <br>
+                        Consulta el <a href="" style="color:aqua; text-decoration: none;">Aviso de privacidad</a>  
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    </div>
+    <!--Bootstrap-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
+</body>
+</html>

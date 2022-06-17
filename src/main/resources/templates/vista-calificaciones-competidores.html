@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" th:href="@{../assets/puma.ico}" type="image/x-icon">
+    <!--Bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <!--CSS-->
+    <link rel="stylesheet" th:href="@{../css/styles.css}">
+    <!--fontawesome-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <script th:src="@{../js/funciones.js}"></script>
+    <title>Competidores</title>   
+</head>
+<body>
+    <!-- container: no quita espacios
+        container-fluid: quita espacios-->
+    <div class="container">
+        <!--Header-->
+        <header class="row">
+            <div class="col header">
+                <div class="d-flex justify-content-around align-items-center">
+                    <a href="https://www.unam.mx" style="text-decoration: none; color: white; height: 100%;">
+                        <div class="d-inline-flex" >
+                            <div style="padding-right: 20px;">
+                                <img th:src="@{../assets/logo-unam.png}" class="" alt="logo UNAM" style="height: auto; width: 60px;">
+                            </div>            
+                            <div class="header-text align-self-center">
+                                <span class="text-center">Universidad Nacional<br>Autónoma de México</span>
+                            </div>                       
+                        </div>
+                    </a>
+                    <a href="https://deporte.unam.mx" style="text-decoration: none; color: white; height: 100%;">
+                        <div class="d-inline-flex">
+                            <div class="align-self-center header-text">
+                                <span class="text-center">Sistema<br>Pumadex</span>
+                            </div> 
+                            <div style="padding-left: 20px;">
+                                <img th:src="@{../assets/LogoDeporteUNAM.png}" class="" alt="logo deporte unam" style="height: auto; width: 60px;">
+                            </div>              
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!--Navbar-->
+
+        <div class="row" style="background: #e1b715; color: #202c56; padding: 8px; margin-bottom: 5px; border-radius: 5px;">
+            <div class="col d-flex justify-content-between">
+                <a th:href="@{/home}" style="text-decoration: none; color: #202c56;">
+                    <div class="d-flex">
+                        <div style="margin-left: 20px;margin-right: 5px;">
+                            <span class="iconify" data-icon="ant-design:home-filled" style="color: #202c56; font-size: 25px;"></span>
+                        </div>
+                        <div class="align-self-end">
+                            <span>Inicio</span>
+                        </div>
+                    </div>
+                </a>
+                <div class="dropdown">
+                    <a class="" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none; color: #202c56;">
+                        <div class="d-flex">
+                            <div>
+                                <span class="iconify" data-icon="carbon:user-avatar-filled" style="color: #202c56; font-size: 25px;"></span>
+                            </div>
+                            <div class="align-self-end" style="margin-left: 5px; margin-right: 20px;">
+                                <span >Cuenta</span>
+                            </div>
+                        </div>                       
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" style="background: #202c56;">
+                        <li><a class="dropdown-item menu-usuario" th:href="@{/ajustes}">Ajustes de Cuenta</a></li>
+                        <li><a class="dropdown-item menu-usuario" th:href="@{/salir}">Cerrar Sesión</a></li>
+                    </ul>
+                </div>
+                
+            </div>
+        </div>
+
+        <!--Body-->
+
+        <section class="row" style="background: #edf5fc; border-radius: 5px; color: #202c56;">
+            <div class="col d-flex flex-column justify-content-center" style="padding: 30px;">
+                <div class="alert alert-warning alert-dismissible fade show" th:if="${error}" role="alert">
+                    El email <strong th:text="${emailCompetidor}"></strong> o la CURP <strong th:text="${curpCompetidor}"></strong>, ya están en uso!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <div class="alert alert-success alert-dismissible fade show" th:if="${success}" role="alert">
+                    Competidor <span th:text="${action}"></span> con éxito!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <!--BodyHeader-->
+                <div class="d-flex justify-content-between" style="margin-left: 30px; margin-right: 30px;">
+                    <div class="align-self-center">
+                        <div class="align-self-center">
+                            <span th:text="${@urlService.findNombreDisciplina(disciplinaJuez)}" style="font-size: 28px;"></span>
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="align-self-center">
+                            <span style="font-size: 28px;">Competidores</span>
+                        </div>
+                        <div>
+                            <span class="iconify" data-icon="bxs:user" style="color: #202c56; font-size: 50px;"></span>
+                        </div>
+                    </div>
+                </div>
+                <!--Buscador-->
+                <div class="align-self-end inner-addon left-addon" style="margin-top: 20px; margin-right: 40px;">
+                    <i class="fa-solid fa-magnifying-glass form-control-feedback"></i>
+                    <input type="text" id="miEntrada" onkeyup="buscarEnTabla()" placeholder="Buscar por nombre.." class="form-control" />
+                </div>
+                <!--Tabla-->
+                <div id="tablaUsuarios" class="table-responsive" style="margin-top: 20px; max-height: 400px; background: #ac965a; padding: 20px; border-radius: 10px;  border: 3px solid #202C56;">
+                    <div>
+                        <table class="table table-hover" style="color: #202C56; border-bottom: #202C56; border-collapse: separate; border-spacing: 0 8px;">
+                            <thead>
+                              <tr>
+                                <th scope="col">Nombre(s)</th>
+                                <th scope="col">Apellido Paterno</th>
+                                <th scope="col">Apellido Materno</th>
+                                <th scope="col">Disciplina</th>
+                                <th scope="col">Calificación</th>
+                                <th scope="col">Comentario</th>
+                                <th scope="col"></th>
+                                
+                              </tr>
+                            </thead>
+                            <tbody style="background: #edf5fc; border-radius: 5px;">
+                              <tr th:each="competidor : ${competidores}">
+                                <td th:text="${competidor.nombre}"></td>
+                                <td th:text="${competidor.apPaterno}"></td>
+                                <td th:text="${competidor.apMaterno}"></td>
+                                <td th:text="${@urlService.findNombreDisciplina(competidor.disciplina)}"></td>
+                                <td th:text="${competidor.calificacion}"></td>
+                                <td th:text="${competidor.comentario}"></td>
+                        
+                                <td>
+                                    <button th:if="${competidor.calificacion==null}" type="button" class="btn btn-primary" data-bs-toggle="modal" data-row="${competidor}" th:attr="data-bs-target='#modalCalificar'+${competidor.idUsuario}" style="width: 7em;">
+                                        <div class="d-flex justify-content-around">
+                                            <div class="">
+                                                <span class="iconify" data-icon="healthicons:i-exam-qualification" style="color: #f8f8f8; font-size: 20px;"></span>
+                                            </div>
+                                            <div class="" style="margin-top: 3px;">
+                                                <span>Calificar</span>
+                                            </div>
+                                        </div>
+                                    </button>
+                                    <button th:if="${competidor.calificacion!=null}" type="button" class="btn btn-warning" data-bs-toggle="modal" data-row="${competidor}" th:attr="data-bs-target='#modalCalificar'+${competidor.idUsuario}" style="width: 7em; color: white;">
+                                        <div class="d-flex justify-content-around">
+                                            <div class="">
+                                                <span class="iconify" data-icon="akar-icons:edit" style="color: #f8f8f8; font-size: 20px;"></span>
+                                            </div>
+                                            <div class="" style="margin-top: 3px;">
+                                                <span>Editar</span>
+                                            </div>
+                                        </div>
+                                    </button>
+                                </td>
+                                <!-- Modal Calificar Competidor-->
+                                <div th:fragment="modal" class="modal fade" id="modalCalificar" th:id="modalCalificar+${competidor.idUsuario}" tabindex="-1" aria-labelledby="exampleModal2Label" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-scrollable">
+                                    <div class="modal-content" style="background: #202c56; border-radius: 8px;">
+                                        <div class="modal-header border-0">
+                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+
+                                        <div class="modal-body d-flex flex-column align-items-center">
+                                            <div class="">
+                                                <form class="d-flex flex-column align-items-center" style="color: #202c56;" method="post" th:action="@{/competidor/calificar}">
+                                                    
+                                                    <div th:if="${competidor.calificacion==null}" class="formulario">
+                                                        <span class="fs-3" style="color: #edf5fc;">Calificar un Competidor</span>
+                                                    </div>
+                                                    <div th:if="${competidor.calificacion!=null}" class="formulario">
+                                                        <span class="fs-3" style="color: #edf5fc;">Editar Calificación</span>
+                                                    </div>
+                                                    <input type="hidden" name="idCompetidor" th:value="${competidor.idUsuario}"/>
+                                                   
+                                                    <div class="formulario">
+                                                        <select name="calificacionOtorgada" class="form-select form-select-lg" aria-label="Default select example" style="border-width: 2px; border-color: #202C56;" required>
+                                                            <option selected disabled value="">Eliga una calificación</option>
+                                                            <option th:each="calificacion : ${rangoCalificaciones}" th:value="${calificacion}" th:text="${calificacion}"></option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="formulario form-floating">
+                                                        <textarea name="comentarioJuez" class="form-control" placeholder="Deje un comentario aqui" minlength="20" maxlength="300" id="comentarioJuez" style="height: 10em;" required></textarea>
+                                                        <label for="comentarioJuez">Escriba un comentario</label>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between" style="width: 350px; margin-bottom: 20px;">
+                                                        <div>
+                                                            <button type="submit" class="btn btn-success btn-lg m-2">
+                                                                <div class="d-flex">
+                                                                    <div class="" style="margin-right: 5px;">
+                                                                        <span class="iconify" data-icon="el:ok-sign" style="color: #f8f8f8; font-size: 20px;"></span>
+                                                                    </div>
+                                                                    <div class="" style="margin-top: 3px;">
+                                                                        <span>Aceptar</span>
+                                                                    </div>
+                                                                </div>
+                                                            </button>                     
+                                                        </div>
+                                                        <div>
+                                                            <button type="button" class="btn btn-danger btn-lg m-2" data-bs-dismiss="modal">
+                                                                <div class="d-flex">
+                                                                    <div class="" style="margin-right: 5px;">
+                                                                        <span class="iconify" data-icon="ic:baseline-cancel" data-width="25" style="color: #f8f8f8; font-size: 20px;"></span>
+                                                                    </div>
+                                                                    <div class="" style="margin-top: 3px;">
+                                                                        <span>Cancelar</span>
+                                                                    </div>
+                                                                </div>
+                                                            </button>                     
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                                
+                              </tr> 
+                                                               
+                            </tbody>
+                          </table>
+                    </div>
+                </div>
+                
+            </div>
+        </section>
+        
+
+        <!--Footer-->
+        <footer class="row">
+            <div class="col footer">
+                <div class="d-flex flex-column">
+                    <!-- Redes Sociales-->
+                    <div class="text-center" style="padding: 20px; padding-bottom: 0;">
+                        <div class="d-inline-flex div-social-m">
+                            <div class="">
+                                <p class="text-center fw-normal" style="font-size: 12px;">Encuéntranos en:</p>
+                            </div>
+                            <div class="social-m">                              
+                                <a href="https://www.facebook.com/DeporteUNAM1"><i class="fa-brands fa-facebook fa-lg"></i></a>
+                                <a href="https://twitter.com/deporteunam"><i class="fa-brands fa-twitter fa-lg"></i></a>
+                                <a href="https://www.instagram.com/deporteunam/"><i class="fa-brands fa-instagram fa-lg"></i></a>
+                                <a href="https://www.youtube.com/user/activdeportivas"><i class="fa-brands fa-youtube fa-lg"></i></a>
+                                <a href="https://www.tiktok.com/@deporteunam?lang=es"><i class="fa-brands fa-tiktok fa-lg"></i></a>      
+                            </div>
+                        </div>
+                    </div>
+                    <!--Creditos-->
+                    <div class="" style="padding: 20px;">
+                        <p class="text-center fw-light lh-1" style="font-size: 10px;">
+                            Hecho en México, Universidad Nacional Autónoma de México (UNAM), todos los derechos reservados 2022. <br>
+                            Esta página puede ser reproducida con fines no lucrativos, siempre y cuando no se mutile, se cite la fuente <br>
+                            completa y su dirección electrónica. De otra forma, requiere permiso previo por escrito de la institución. <br>
+                            Consulta el <a href="" style="color:aqua; text-decoration: none;">Aviso de privacidad</a>  
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <!--Bootstrap-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <!--Iconify-->
+    <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
+</body>
+</html>

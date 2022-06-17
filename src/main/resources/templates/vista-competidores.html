@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" th:href="@{../assets/puma.ico}" type="image/x-icon">
+    <!--Bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <!--CSS-->
+    <link rel="stylesheet" th:href="@{../css/styles.css}">
+    <!--fontawesome-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <script th:src="@{../js/funciones.js}"></script>
+    <title>Competidores</title>   
+</head>
+<body>
+    <!-- container: no quita espacios
+        container-fluid: quita espacios-->
+    <div class="container">
+        <!--Header-->
+        <header class="row">
+            <div class="col header">
+                <div class="d-flex justify-content-around align-items-center">
+                    <a href="https://www.unam.mx" style="text-decoration: none; color: white; height: 100%;">
+                        <div class="d-inline-flex" >
+                            <div style="padding-right: 20px;">
+                                <img th:src="@{../assets/logo-unam.png}" class="" alt="logo UNAM" style="height: auto; width: 60px;">
+                            </div>            
+                            <div class="header-text align-self-center">
+                                <span class="text-center">Universidad Nacional<br>Autónoma de México</span>
+                            </div>                       
+                        </div>
+                    </a>
+                    <a href="https://deporte.unam.mx" style="text-decoration: none; color: white; height: 100%;">
+                        <div class="d-inline-flex">
+                            <div class="align-self-center header-text">
+                                <span class="text-center">Sistema<br>Pumadex</span>
+                            </div> 
+                            <div style="padding-left: 20px;">
+                                <img th:src="@{../assets/LogoDeporteUNAM.png}" class="" alt="logo deporte unam" style="height: auto; width: 60px;">
+                            </div>              
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!--Navbar-->
+
+        <div class="row" style="background: #e1b715; color: #202c56; padding: 8px; margin-bottom: 5px; border-radius: 5px;">
+            <div class="col d-flex justify-content-between">
+                <a th:href="@{/home}" style="text-decoration: none; color: #202c56;">
+                    <div class="d-flex">
+                        <div style="margin-left: 20px;margin-right: 5px;">
+                            <span class="iconify" data-icon="ant-design:home-filled" style="color: #202c56; font-size: 25px;"></span>
+                        </div>
+                        <div class="align-self-end">
+                            <span>Inicio</span>
+                        </div>
+                    </div>
+                </a>
+                <div class="dropdown">
+                    <a class="" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none; color: #202c56;">
+                        <div class="d-flex">
+                            <div>
+                                <span class="iconify" data-icon="carbon:user-avatar-filled" style="color: #202c56; font-size: 25px;"></span>
+                            </div>
+                            <div class="align-self-end" style="margin-left: 5px; margin-right: 20px;">
+                                <span >Cuenta</span>
+                            </div>
+                        </div>                       
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" style="background: #202c56;">
+                        <li><a class="dropdown-item menu-usuario" th:href="@{/ajustes}">Ajustes de Cuenta</a></li>
+                        <li><a class="dropdown-item menu-usuario" th:href="@{/salir}">Cerrar Sesión</a></li>
+                    </ul>
+                </div>
+               
+            </div>
+        </div>
+
+        <!--Body-->
+
+        <section class="row" style="background: #edf5fc; border-radius: 5px; color: #202c56;">
+            <div class="col d-flex flex-column justify-content-center" style="padding: 30px;">
+                <div class="alert alert-warning alert-dismissible fade show" th:if="${error}" role="alert">
+                    El email <strong th:text="${emailCompetidor}"></strong> o la CURP <strong th:text="${curpCompetidor}"></strong>, ya están en uso!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <div class="alert alert-success alert-dismissible fade show" th:if="${success}" role="alert">
+                    Competidor <span th:text="${action}"></span> con éxito!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <!--BodyHeader-->
+                <div class="d-flex justify-content-between" style="margin-left: 30px; margin-right: 30px;">
+                    <div class="align-self-center">
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <div class="d-flex">
+                                <div class="">
+                                    <span class="iconify" data-icon="ant-design:user-add-outlined" style="color: #f8f8f8; font-size: 20px;"></span>
+                                </div>
+                                <div class="" style="margin-top: 3px;">
+                                    <span>Agregar</span>
+                                </div>
+                            </div>
+                        </button>
+                        <!-- Modal Agregar-->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-scrollable">
+                            <div class="modal-content" style="background: #202c56; border-radius: 8px;">
+                                <div class="modal-header border-0">
+                                    <!--<h5 class="modal-title" id="exampleModalLabel">Agregar un Competidor</h5>-->
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+
+                                <div class="modal-body">
+                                   
+                                    <form class="d-flex flex-column align-items-center" style="color: #202c56;" method="post" th:action="@{/competidor/agrega}">
+                                        
+                                        <div class="formulario">
+                                            <span class="fs-3" style="color: #edf5fc;">Agregar un Competidor</span>
+                                        </div>
+                                        <div class="formulario form-floating" >  
+                                            <input name="nombre" type="text" class="form-control" id="nombre" placeholder="Nombre" required>
+                                            <label for="nombre">Nombre(s)</label>                    
+                                        </div>
+                                        <div class="formulario form-floating" >  
+                                            <input name="ap-paterno" type="text" class="form-control" id="ap-paterno" placeholder="Gonzalez" required>
+                                            <label for="ap-paterno">Apellido Paterno</label>                    
+                                        </div>
+                                        <div class="formulario form-floating" >  
+                                            <input name="ap-materno" type="text" class="form-control" id="ap-materno" placeholder="Gonzalez" required>
+                                            <label for="ap-materno">Apellido Materno</label>                    
+                                        </div>
+                                        <div class="formulario form-floating" >  
+                                            <input name="email" type="email" class="form-control" id="email" placeholder="name@example.com" required>
+                                            <label for="email">Email</label>                    
+                                        </div>
+                                        <div class="formulario form-floating" >  
+                                            <input pattern="[A-Z]{1}[AEIOU]{1}[A-Z]{2}[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]{1}[0-9]{1}" maxlength="18" name="curp" type="text" class="form-control" id="curp" placeholder="XXYY112233HMC" style="text-transform:uppercase" required>
+                                            <label for="curp">CURP</label>                    
+                                        </div>
+                                        <div class="formulario form-floating" >  
+                                            <input pattern="[0-9]{10}" name="telefono" maxlength="10" type="text" class="form-control" id="telefono" placeholder="5512345678" required>
+                                            <label for="telefono">Teléfono</label>                    
+                                        </div>
+                                        <div class="formulario form-floating" >  
+                                            <input name="password" minlength="8" maxlength="20" type="password" class="form-control" id="password" placeholder="Password" required>
+                                            <label for="password">Contraseña</label>                    
+                                        </div>
+                                        <div class="formulario">
+                                            <select name="nombre-disciplina" class="form-select form-select-lg" aria-label="Default select example" style="border-width: 2px; border-color: #202C56;" required>
+                                                <!--<option selected disabled value="">Selecciona una disciplina</option>-->
+                                                <!--<option th:each="disciplina : ${disciplinas}" th:value="${disciplina.nombre}" th:text="${disciplina.nombre}"></option>-->
+                                                <option selected th:value="${disciplinaEntrenador}" th:text="${@urlService.findNombreDisciplina(disciplinaEntrenador)}"></option>
+                                            </select>
+                                        </div>
+                                        <div class="d-flex justify-content-between" style="width: 350px; margin-bottom: 20px;">
+                                            <div>
+                                                <button type="submit" class="btn btn-success btn-lg m-2">
+                                                    <div class="d-flex">
+                                                        <div class="" style="margin-right: 5px;">
+                                                            <span class="iconify" data-icon="el:ok-sign" style="color: #f8f8f8; font-size: 20px;"></span>
+                                                        </div>
+                                                        <div class="" style="margin-top: 3px;">
+                                                            <span>Aceptar</span>
+                                                        </div>
+                                                    </div>
+                                                </button>                     
+                                            </div>
+                                            <div>
+                                                <button type="button" class="btn btn-danger btn-lg m-2" data-bs-dismiss="modal">
+                                                    <div class="d-flex">
+                                                        <div class="" style="margin-right: 5px;">
+                                                            <span class="iconify" data-icon="ic:baseline-cancel" data-width="25" style="color: #f8f8f8; font-size: 20px;"></span>
+                                                        </div>
+                                                        <div class="" style="margin-top: 3px;">
+                                                            <span>Cancelar</span>
+                                                        </div>
+                                                    </div>
+                                                </button>                     
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="align-self-center">
+                            <span style="font-size: 28px;">Competidores</span>
+                        </div>
+                        <div>
+                            <span class="iconify" data-icon="bxs:user" style="color: #202c56; font-size: 50px;"></span>
+                        </div>
+                    </div>
+                </div>
+                <!--Buscador-->
+                <div class="align-self-end inner-addon left-addon" style="margin-top: 20px; margin-right: 40px;">
+                    <i class="fa-solid fa-magnifying-glass form-control-feedback"></i>
+                    <input type="text" id="miEntrada" onkeyup="buscarEnTabla()" placeholder="Buscar por nombre.." class="form-control" />
+                </div>
+                <!--Tabla-->
+                <div id="tablaUsuarios" class="table-responsive" style="margin-top: 20px; max-height: 400px; background: #ac965a; padding: 20px; border-radius: 10px;  border: 3px solid #202C56;">
+                    <div>
+                        <table class="table table-hover" style="color: #202C56; border-bottom: #202C56; border-collapse: separate; border-spacing: 0 8px;">
+                            <thead>
+                              <tr>
+                                <!--<th scope="col">ID</th>-->
+                                <th scope="col">Nombre(s)</th>
+                                <th scope="col">Apellido Paterno</th>
+                                <th scope="col">Apellido Materno</th>
+                                <th scope="col">CURP</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Teléfono</th>
+                                <th scope="col">Disciplina</th>
+                                <th></th>
+                                <th></th>
+                              </tr>
+                            </thead>
+                            <tbody style="background: #edf5fc; border-radius: 5px;">
+                              <tr th:each="competidor : ${competidores}">
+                                <!--<th scope="row"th:text="${competidor.idUsuario}"></th>-->
+                                <td th:text="${competidor.nombre}"></td>
+                                <td th:text="${competidor.apPaterno}"></td>
+                                <td th:text="${competidor.apMaterno}"></td>
+                                <td th:text="${competidor.curp}"></td>
+                                <td th:text="${competidor.email}"></td>
+                                <td th:text="${competidor.telefono}"></td>
+                                <td th:text="${@urlService.findNombreDisciplina(competidor.disciplina)}"></td>
+                                <td>
+                                    <a href="#" data-bs-toggle="modal" data-row="${competidor}" th:attr="data-bs-target='#modalEditar'+${competidor.idUsuario}">
+                                        <span class="iconify" data-icon="fa-solid:user-edit" style="color: #1ebcdf; font-size: 25px;"></span>
+                                    </a>
+                                </td>
+                                <!-- Modal Editar Competidor-->
+                                <div th:fragment="modal" class="modal fade" id="modalEditar" th:id="modalEditar+${competidor.idUsuario}" tabindex="-1" aria-labelledby="exampleModal2Label" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-scrollable">
+                                    <div class="modal-content" style="background: #202c56; border-radius: 8px;">
+                                        <div class="modal-header border-0">
+                                            <!--<h5 class="modal-title" id="exampleModalLabel">Agregar un Juez</h5>-->
+                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+
+                                        <div class="modal-body d-flex flex-column align-items-center">
+                                            <div class="">
+                                                <form class="d-flex flex-column align-items-center" style="color: #202c56;" method="post" th:action="@{/competidor/edita}">
+                                                    
+                                                    <div class="formulario">
+                                                        <span class="fs-3" style="color: #edf5fc;">Editar un Competidor</span>
+                                                    </div>
+                                                    <input type="hidden" name="id" th:value="${competidor.idUsuario}"/>
+                                                    <div class="formulario form-floating" >  
+                                                        <input th:value="${competidor.nombre}" name="nombre" type="text" class="form-control" id="nombre" placeholder="Luis" required>
+                                                        <label for="nombre">Nombre(s)</label>                    
+                                                    </div>
+                                                    <div class="formulario form-floating" >  
+                                                        <input th:value="${competidor.apPaterno}" name="ap-paterno" type="text" class="form-control" id="ap-paterno" placeholder="Gonzalez" required>
+                                                        <label for="ap-paterno">Apellido Paterno</label>                    
+                                                    </div>
+                                                    <div class="formulario form-floating" >  
+                                                        <input th:value="${competidor.apMaterno}" name="ap-materno" type="text" class="form-control" id="ap-materno" placeholder="Gonzalez" required>
+                                                        <label for="ap-materno">Apellido Materno</label>                    
+                                                    </div>
+                                                    <div class="formulario form-floating" >  
+                                                        <input th:value="${competidor.email}"name="email" type="email" class="form-control" id="email" placeholder="name@example.com" required>
+                                                        <label for="email">Email</label>                    
+                                                    </div>
+                                                    <div class="formulario form-floating" >  
+                                                        <input th:value="${competidor.curp}" pattern="[A-Z]{1}[AEIOU]{1}[A-Z]{2}[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]{1}[0-9]{1}" maxlength="18" name="curp" type="text" class="form-control" id="curp" placeholder="XXYY112233HMC" style="text-transform:uppercase" required>
+                                                        <label for="curp">CURP</label>                    
+                                                    </div>
+                                                    <div class="formulario form-floating" >  
+                                                        <input th:value="${competidor.telefono}" pattern="[0-9]{10}" name="telefono" maxlength="10" type="text" class="form-control" id="telefono" placeholder="5512345678" required>
+                                                        <label for="telefono">Teléfono</label>                    
+                                                    </div>
+                                                    <div class="formulario form-floating" >  
+                                                        <input name="passwordE" minlength="8" maxlength="20" type="password" class="form-control" id="passwordE" placeholder="Password">
+                                                        <label for="passwordE">Contraseña</label>                    
+                                                    </div>
+                                                    <div class="formulario">
+                                                        <select name="nombre-disciplina-e" class="form-select form-select-lg" aria-label="Default select example" style="border-width: 2px; border-color: #202C56;" required>
+                                                            <!--<option selected th:value="${competidor.disciplina}" th:text="${competidor.disciplina}"></option>
+                                                            <option th:each="disciplina : ${disciplinas}" th:value="${disciplina.nombre}" th:text="${disciplina.nombre}"></option>-->
+                                                            <option selected th:value="${disciplinaEntrenador}" th:text="${@urlService.findNombreDisciplina(disciplinaEntrenador)}"></option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between" style="width: 350px; margin-bottom: 20px;">
+                                                        <div>
+                                                            <button type="submit" class="btn btn-success btn-lg m-2">
+                                                                <div class="d-flex">
+                                                                    <div class="" style="margin-right: 5px;">
+                                                                        <span class="iconify" data-icon="el:ok-sign" style="color: #f8f8f8; font-size: 20px;"></span>
+                                                                    </div>
+                                                                    <div class="" style="margin-top: 3px;">
+                                                                        <span>Aceptar</span>
+                                                                    </div>
+                                                                </div>
+                                                            </button>                     
+                                                        </div>
+                                                        <div>
+                                                            <button type="button" class="btn btn-danger btn-lg m-2" data-bs-dismiss="modal">
+                                                                <div class="d-flex">
+                                                                    <div class="" style="margin-right: 5px;">
+                                                                        <span class="iconify" data-icon="ic:baseline-cancel" data-width="25" style="color: #f8f8f8; font-size: 20px;"></span>
+                                                                    </div>
+                                                                    <div class="" style="margin-top: 3px;">
+                                                                        <span>Cancelar</span>
+                                                                    </div>
+                                                                </div>
+                                                            </button>                     
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                                <td>
+                                    <a href="#" data-bs-toggle="modal" data-row="${competidor}" th:attr="data-bs-target='#modalEliminar'+${competidor.idUsuario}">
+                                        <span class="iconify" data-icon="fluent:delete-24-filled" style="color: #f72a2a; font-size: 30px;"></span>
+                                    </a>
+                                </td>
+                                <!-- Modal Eliminar Competidor-->
+                                <div th:fragment="modal" class="modal fade" id="modalEliminar" th:id="modalEliminar+${competidor.idUsuario}" tabindex="-1" aria-labelledby="modalEliminarLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                    <div class="modal-content modal-eliminar">
+                                        <div class="modal-header border-0">
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div> 
+                                        <div class="modal-body">
+                                            <p class="text-center fs-4 fw-light">
+                                                ¿Seguro que desea eliminar a: 
+                                                <br>
+                                                <span class="fw-bold" th:text="${competidor.nombre} + ' ' + ${competidor.apPaterno} + ' ' + ${competidor.apMaterno}"></span> 
+                                                <br>
+                                                de la base de datos competidores?
+                                            </p>                                        
+                                        </div>
+                                        <div class="modal-footer border-0 justify-content-around">
+                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                            <button type="button" class="btn btn-success">
+                                                <a th:href="@{/competidor/elimina(idUsuario=${competidor.idUsuario})}" style="text-decoration: none; color: white;">Aceptar</a>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                              </tr> 
+                                                               
+                            </tbody>
+                          </table>
+                    </div>
+                </div>
+                
+            </div>
+        </section>
+        
+
+        <!--Footer-->
+        <footer class="row">
+            <div class="col footer">
+                <div class="d-flex flex-column">
+                    <!-- Redes Sociales-->
+                    <div class="text-center" style="padding: 20px; padding-bottom: 0;">
+                        <div class="d-inline-flex div-social-m">
+                            <div class="">
+                                <p class="text-center fw-normal" style="font-size: 12px;">Encuéntranos en:</p>
+                            </div>
+                            <div class="social-m">                              
+                                <a href="https://www.facebook.com/DeporteUNAM1"><i class="fa-brands fa-facebook fa-lg"></i></a>
+                                <a href="https://twitter.com/deporteunam"><i class="fa-brands fa-twitter fa-lg"></i></a>
+                                <a href="https://www.instagram.com/deporteunam/"><i class="fa-brands fa-instagram fa-lg"></i></a>
+                                <a href="https://www.youtube.com/user/activdeportivas"><i class="fa-brands fa-youtube fa-lg"></i></a>
+                                <a href="https://www.tiktok.com/@deporteunam?lang=es"><i class="fa-brands fa-tiktok fa-lg"></i></a>      
+                            </div>
+                        </div>
+                    </div>
+                    <!--Creditos-->
+                    <div class="" style="padding: 20px;">
+                        <p class="text-center fw-light lh-1" style="font-size: 10px;">
+                            Hecho en México, Universidad Nacional Autónoma de México (UNAM), todos los derechos reservados 2022. <br>
+                            Esta página puede ser reproducida con fines no lucrativos, siempre y cuando no se mutile, se cite la fuente <br>
+                            completa y su dirección electrónica. De otra forma, requiere permiso previo por escrito de la institución. <br>
+                            Consulta el <a href="" style="color:aqua; text-decoration: none;">Aviso de privacidad</a>  
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <!--Bootstrap-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <!--Iconify-->
+    <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" th:href="@{../assets/puma.ico}" type="image/x-icon">
+    <!--Bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <!--CSS-->
+    <link rel="stylesheet" th:href="@{css/styles.css}">
+    <!--fontawesome-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <title>Ajustes de Cuenta</title>   
+</head>
+<body>
+    <!-- container: no quita espacios
+        container-fluid: quita espacios-->
+    <div class="container" >
+        <!--Header-->
+        <header class="row">
+            <div class="col header">
+                <div class="d-flex justify-content-around align-items-center">
+                    <a href="https://www.unam.mx" style="text-decoration: none; color: white; height: 100%;">
+                        <div class="d-inline-flex" >
+                            <div style="padding-right: 20px;">
+                                <img th:src="@{../assets/logo-unam.png}" class="" alt="logo UNAM" style="height: auto; width: 60px;">
+                            </div>            
+                            <div class="header-text align-self-center">
+                                <span class="text-center">Universidad Nacional<br>Autónoma de México</span>
+                            </div>                       
+                        </div>
+                    </a>
+                    <a href="https://deporte.unam.mx" style="text-decoration: none; color: white; height: 100%;">
+                        <div class="d-inline-flex">
+                            <div class="align-self-center header-text">
+                                <span class="text-center">Sistema<br>Pumadex</span>
+                            </div> 
+                            <div style="padding-left: 20px;">
+                                <img th:src="@{../assets/LogoDeporteUNAM.png}" class="" alt="logo deporte unam" style="height: auto; width: 60px;">
+                            </div>              
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!--Navbar-->
+
+        <div class="row" style="background: #e1b715; color: #202c56; padding: 8px; margin-bottom: 5px; border-radius: 5px;">
+            <div class="col d-flex justify-content-between">
+                <a th:href="@{/home}" style="text-decoration: none; color: #202c56;">
+                    <div class="d-flex">
+                        <div style="margin-left: 20px;margin-right: 5px;">
+                            <span class="iconify" data-icon="ant-design:home-filled" style="color: #202c56; font-size: 25px;"></span>
+                        </div>
+                        <div class="align-self-end">
+                            <span>Inicio</span>
+                        </div>
+                    </div>
+                </a>
+               
+                <div class="dropdown">
+                    <a class="" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none; color: #202c56;">
+                        <div class="d-flex">
+                            <div>
+                                <span class="iconify" data-icon="carbon:user-avatar-filled" style="color: #202c56; font-size: 25px;"></span>
+                            </div>
+                            <div class="align-self-end" style="margin-left: 5px; margin-right: 20px;">
+                                <span >Cuenta</span>
+                            </div>
+                        </div>                       
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" style="background: #202c56;">
+                        <li><a class="dropdown-item menu-usuario" th:href="@{/ajustes}">Ajustes de Cuenta</a></li>
+                        <li><a class="dropdown-item menu-usuario" th:href="@{/salir}">Cerrar Sesión</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!--Body-->
+
+        <section  class="row" style="background: #edf5fc; border-radius: 5px;">
+            <div  class="col d-flex flex-column justify-content-center" style="padding: 30px;">
+                <div class="alert alert-danger alert-dismissible fade show"  th:if="${error}" role="alert">
+                    Servicio no disponible temporalmente, disculpe las molestias.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <div class="alert alert-danger alert-dismissible fade show"  th:if="${incorrectPassword}" role="alert">
+                    <span th:text="${errorMsg}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <div class="alert alert-success alert-dismissible fade show" th:if="${success}" role="alert">
+                    Contraseña actualizada con éxito!. 
+                    
+                    Se envió un correo de confirmación a <span class="fw-bold" th:text="${usuarioActivo.email}"></span> 
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <div class="d-flex flex-column" style="color: #202c56;">
+                    <div class="d-flex justify-content-between titulo" style="margin-bottom: 10px;font-size: 24px;">                     
+                        <div class="d-flex" style="margin-right: 10px;">
+                            <div class="" style="padding-right: 10px;">
+                                <span class="iconify" data-icon="bxs:user-detail" style="color: #202c56; font-size: 40px;"></span>
+                            </div>
+                            <div class="align-self-end">
+                                <span>Información de la Cuenta</span>
+                            </div>
+                        </div> 
+
+                    </div>                                                                                    
+                </div>
+                <div class="div-data d-flex align-items-center" style="padding: 20px; color: #202c56;">
+                    <div class="col-md-3 text-center mb-5">
+                        <div class="avatar avatar-xl">
+                            <img sec:authorize="hasRole('ROLE_JUEZ')" src="https://www.shareicon.net/data/512x512/2016/06/27/787162_people_512x512.png" alt="..." class="avatar-img rounded-circle" />
+                            <img sec:authorize="hasRole('ROLE_ADMIN')" src="https://images.assetsdelivery.com/compings_v2/anatolir/anatolir2011/anatolir201106345.jpg" alt="..." class="avatar-img rounded-circle" />
+                            <img sec:authorize="hasRole('ROLE_COMPETIDOR')" th:src="@{../assets/avatar-competidor.png}" alt="..." class="avatar-img rounded-circle" />
+                            <img sec:authorize="hasRole('ROLE_ENTRENADOR')" src="https://laligadeplomo.com/wp-content/uploads/2020/03/avatar-default-image.png" alt="..." class="avatar-img rounded-circle" />
+
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row align-items-center">
+                            <div class="col-md-7">
+                                <h4 class="mb-1" th:text="${usuarioActivo.nombre} + ' ' + ${usuarioActivo.apPaterno} + ' ' +${usuarioActivo.apMaterno}" ></h4>
+                                <p class="fs-4 mb-3" sec:authorize="hasRole('ROLE_JUEZ')" ><span class="badge badge-dark fst-italic" style="color: #202c56;">Juez de <span th:text="${@urlService.findNombreDisciplina(usuarioActivo.disciplina)}"></span></span></p>
+                                <p class="fs-4 mb-3" sec:authorize="hasRole('ROLE_COMPETIDOR')" ><span class="badge badge-dark fst-italic" style="color: #202c56;">Competidor de <span th:text="${@urlService.findNombreDisciplina(usuarioActivo.disciplina)}"></span></span></p>
+                                <p class="fs-4 mb-3" sec:authorize="hasRole('ROLE_ENTRENADOR')" ><span class="badge badge-dark fst-italic" style="color: #202c56;">Entrenador de <span th:text="${@urlService.findNombreDisciplina(usuarioActivo.disciplina)}"></span></span></p>
+                                <p class="fs-4 mb-3" sec:authorize="hasRole('ROLE_ADMIN')" ><span class="badge badge-dark fst-italic" style="color: #202c56;">Administrador de Sistema</span></p>
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-md-7">
+                                <p class="fs-5">
+                                    Datos registrados
+                                </p>
+                                <div class="form-group">
+                                    <label for="emailCurrentUser">Email</label>
+                                    <input type="text" class="form-show" id="emailCurrentUser" th:value="${usuarioActivo.email}" disabled/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="telefonoCurrentUser">Teléfono</label>
+                                    <input type="text" class="form-show" id="telefonoCurrentUser" th:value="${usuarioActivo.telefono}" disabled/>
+                                </div>
+                                <div sec:authorize="!hasRole('ROLE_COMPETIDOR')"class="form-group">
+                                    <label for="rfcCurrentUser">RFC</label>
+                                    <input type="text" class="form-show" id="rfcCurrentUser" th:value="${usuarioActivo.rfc}" disabled/>
+                                </div>
+                                <div sec:authorize="hasRole('ROLE_COMPETIDOR')" class="form-group">
+                                    <label for="curpCurrentUser">CURP</label>
+                                    <input type="text" class="form-show" id="curpCurrentUser" th:value="${usuarioActivo.curp}" disabled/>
+                                </div>
+                            </div>
+                            <div class="col d-flex flex-column">
+                                <div class="align-self-center">
+                                    <p class="mb-10 fs-5 fst-normal">¿Tienes algún problema?</p>
+                                </div>
+                                <div class="align-self-center">
+                                    <a href="mailto:pumadexwebmaster@gmail.com">
+                                        <button type="button" class="btn btn-warning" style="color: white;">Reportar</button>
+                                    </a>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr style="height:2px;border-width:0;background-color: #202c56; opacity: 40%; margin-bottom: 2em;">
+                <div class="d-flex flex-column" style="color: #202c56;">
+                    <div class="d-flex justify-content-between titulo" style="margin-bottom: 10px;font-size: 24px;">                     
+                        <div class="d-flex" style="margin-right: 10px;">
+                            <div class="" style="padding-right: 10px;">
+                                <span class="iconify" data-icon="fa6-solid:key" style="color: #202c56; font-size: 40px;"></span>
+                            </div>
+                            <div class="align-self-end">
+                                <span>Cambiar tu Contraseña</span>
+                            </div>
+                        </div> 
+
+                    </div>                                                                                    
+                </div>
+                <div class="div-password d-flex" style="padding: 20px; color: #202c56;">
+                    <div class="col-md-6">
+                        <form class="needs-validation" method="post" th:action="@{/actualizar-contraseña}" novalidate>
+                            <div class="form-group">
+                                <label for="oldPassword">Contraseña Actual</label>
+                                <input minlength="8" maxlength="20" name="oldPassword" type="password" class="form-show form-control" id="oldPassword" required/>
+                                <div class="valid-feedback">
+                                    Perfecto!
+                                </div>
+                                <div class="invalid-feedback">
+                                    La longitud mínima es de 8 caracteres.
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="newPassword">Nueva Contraseña</label>
+                                <input pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,20}$" minlength="8" maxlength="20" name="newPassword" type="password" class="form-show form-control" id="newPassword" onkeyup='check();' required/>
+                                <div class="invalid-feedback">
+                                    Por favor siga el formato de contraseña solicitado.
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px;">
+                                <label for="confirmNewPassword">Confirme la Contraseña</label>
+                                <input pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,20}$" minlength="8" maxlength="20" name="confirmNewPassword" type="password" class="form-show form-control" id="confirmNewPassword" onkeyup='check();' required/>
+                                <div class="invalid-feedback" id="msgConfirmPass">
+                                    Por favor siga el formato de contraseña solicitado.
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </form>
+
+                        <!--<form class="needs-validation" novalidate>
+                            <div class="">
+                              <label for="validationCustom01" class="form-label">First name</label>
+                              <input type="text" class="form-show form-control" id="validationCustom01" value="Mark" required>
+                              <div class="valid-feedback">
+                                Looks good!
+                              </div>
+                            </div>
+                            <div class="">
+                              <label for="validationCustom02" class="form-label">Last name</label>
+                              <input pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,20}$" minlength="8" maxlength="20" type="password" class="form-show form-control" id="validationCustom02" required>
+                              <div class="valid-feedback">
+                                Looks good!
+                              </div>
+                            </div>
+                            <div class="">
+                              <label for="validationCustomUsername" class="form-label">Username</label>                              
+                                <input type="text" class="form-show form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required>
+                                <div class="invalid-feedback">
+                                  Please choose a username.
+                                </div>
+                            </div>                           
+                            <div class="">
+                              <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+                                <label class="form-check-label" for="invalidCheck">
+                                  Agree to terms and conditions
+                                </label>
+                                <div class="invalid-feedback">
+                                  You must agree before submitting.
+                                </div>
+                              </div>
+                            </div>
+                            <div class="">
+                              <button class="btn btn-primary" type="submit">Submit form</button>
+                            </div>
+                        </form>-->
+                       
+                    </div>
+                    <div class="password-req col-md-6">
+                        <p class="mb-2 fs-5 fw-bold">Requerimientos de la Contraseña</p>
+                        <p class="small  mb-2">Tu nueva contraseña debe seguir los siguientes requerimientos:</p>
+                        <ul class="small pl-4 mb-0">
+                            <li>Debe tener una longitud mínima de 8 caracteres y una máxima de 20.</li>
+                            <li>Debe tener al menos un caracter especial</li>
+                            <li>Debe tener al menos un número</li>
+                            <li>Debe tener al menos una letra mayúscula</li>
+                            <li>Debe tener al menos una letra minúscula</li>
+                            <li>Debe ser distinta a tu contraseña anterior</li>
+                        </ul>
+                    </div>
+                </div>
+                
+            </div>
+            <!--<div class="col"></div>-->
+            
+        </section>
+
+        <!--Footer-->
+       <footer class="row">
+        <div class="col footer">
+            <div class="d-flex flex-column">
+                <!-- Redes Sociales-->
+                <div class="text-center" style="padding: 20px; padding-bottom: 0;">
+                    <div class="d-inline-flex div-social-m">
+                        <div class="">
+                            <p class="text-center fw-normal" style="font-size: 12px;">Encuéntranos en:</p>
+                        </div>
+                        <div class="social-m">                              
+                            <a href="https://www.facebook.com/DeporteUNAM1"><i class="fa-brands fa-facebook fa-lg"></i></a>
+                            <a href="https://twitter.com/deporteunam"><i class="fa-brands fa-twitter fa-lg"></i></a>
+                            <a href="https://www.instagram.com/deporteunam/"><i class="fa-brands fa-instagram fa-lg"></i></a>
+                            <a href="https://www.youtube.com/user/activdeportivas"><i class="fa-brands fa-youtube fa-lg"></i></a>
+                            <a href="https://www.tiktok.com/@deporteunam?lang=es"><i class="fa-brands fa-tiktok fa-lg"></i></a>      
+                        </div>
+                    </div>
+                </div>
+                <!--Creditos-->
+                <div class="" style="padding: 20px;">
+                    <p class="text-center fw-light lh-1" style="font-size: 10px;">
+                        Hecho en México, Universidad Nacional Autónoma de México (UNAM), todos los derechos reservados 2022. <br>
+                        Esta página puede ser reproducida con fines no lucrativos, siempre y cuando no se mutile, se cite la fuente <br>
+                        completa y su dirección electrónica. De otra forma, requiere permiso previo por escrito de la institución. <br>
+                        Consulta el <a href="" style="color:aqua; text-decoration: none;">Aviso de privacidad</a>  
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+       
+    </div>
+    <!--Bootstrap-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
+    <script th:src="@{../js/funciones.js}"></script>
+</body>
+</html>

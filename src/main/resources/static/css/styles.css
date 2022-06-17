@@ -1,0 +1,261 @@
+body {
+    background: #202C56;
+    color: #fff;
+}
+
+header {
+    padding-top: 2%;
+    padding-bottom: 2%;
+}
+
+.contenedor-main {
+    height: 75%;
+    background-image: url('../assets/fondoHome.jpeg');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+main {
+    background: #ac965adb;
+}
+
+.social-m > a {
+    color: #fff;
+    padding-left: 15px;
+}
+.contenedor-login {
+    width: 350px;
+    border: 3px solid #202C56;
+    border-radius: 10px;
+    background: rgba(32,44,86, 0.2);
+}
+
+#aRegistro{
+    color: white;
+    text-decoration: none;
+}
+#aRegistro:hover{
+    color: #202C56;
+}
+
+.botondb{
+    height: 180px;
+    width: 200px;
+    text-align: center;
+    background: #e1b715;
+    border-radius: 10px;
+    border: 2px solid #202C56;
+    font-size: 24px;
+}
+
+.msg-usr{
+    align-self:flex-end;
+}
+.btn-bd :hover{
+    background: #efd46ad7;
+}
+
+.botonera{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+td:first-child,
+th:first-child {
+  border-radius: 10px 0 0 10px;
+}
+
+td:last-child,
+th:last-child {
+  border-radius: 0 10px 10px 0;
+}
+
+.menu-usuario {
+    color: white;
+}
+
+.menu-usuario :hover{
+    background: #233165;
+}
+
+.formulario{
+    width: 350px;
+    margin-bottom: 10px;
+}
+
+.formulario input {
+    background: #edf5fc;
+    border-color: #202C56;
+    border-width: 2px;
+}
+
+.formulario input:focus{
+    color: #202C56;
+    background: #edf5fc;
+}
+
+.modal-eliminar{
+    background: #edf5fc;
+}
+
+#miEntrada {
+    font-size: 18px; /* Increase font-size */
+    border-radius: 20px;
+    border: 2px solid #202C56; /* Add a grey border */
+    padding-left: 30px;
+}
+
+/* enable absolute positioning */
+.inner-addon { 
+    position: relative; 
+}
+
+/* style icon */
+.inner-addon .fa-solid {
+  position: absolute;
+  padding: 10px;
+  pointer-events: none;
+}
+
+/* align icon */
+.left-addon .fa-solid  { left:  0px;}
+.right-addon .fa-solid { right: 0px;}
+
+/* add padding  */
+.left-addon input  { padding-left:  30px; }
+.right-addon input { padding-right: 30px; }
+
+
+::-webkit-scrollbar {
+    width: 0;
+}
+
+
+.avatar-xl img {
+    width: 150px;
+}
+.rounded-circle {
+    border-radius: 50% !important;
+}
+img {
+    vertical-align: middle;
+    border-style: none;
+}
+.text-muted {
+    color: #aeb0b4 !important;
+}
+.text-muted {
+    font-weight: 300;
+}
+
+.form-show {
+    margin-bottom: 1em;
+    display: block;
+    width: 90%;
+    height: calc(1.5em + 0.75rem + 2px);
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #4d5154;
+    background-color: #ffffff;
+    background-clip: padding-box;
+    border: 1px solid #eef0f3;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+html, body{
+    height: 100%;
+}
+
+.container{
+    height: 100%;
+}
+.home-main-container{
+    height: 75%;
+}
+
+.container-fluid{
+    height: 100%;
+}
+.form-login{
+    width: 100%;
+}
+
+.footer{
+    height: 25%;
+}
+
+@media (max-width: 576px) { 
+    
+    .div-social-m{
+       flex-direction: column;
+    }
+    
+    .contenedor-main{                     
+        height: 60%;
+    }
+    .contenedor-login{
+        visibility: visible;
+        height: 85%;
+        width: 95%;
+    }
+    
+    .header-text{
+        display: none;
+    }
+
+    .home-main-container{
+        height: 80%;
+    }
+
+    .home-header-text{
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .msg-usr{
+        margin-left: 0px;
+        align-self: flex-start;
+        margin-bottom: 8px;
+    }
+    .msg-rol{
+        margin-right: 0px;
+        align-self: flex-end;
+    }
+
+    .botonera{        
+        flex-direction: column;
+    }
+
+    .botondb{
+        width: 200px;
+        height: 120px;
+        font-size: 18px;
+        padding: 10px;
+    }
+
+    .div-password{
+        flex-direction: column;
+    }
+
+    .div-data{
+        flex-direction: column;
+    }
+    
+    .password-req{
+        margin-top: 10px;
+    }
+    
+}
+
+@media (max-height: 475px){
+    .footer{
+        display: none;
+    }
+    .header{
+        display: none;
+    }
+}
